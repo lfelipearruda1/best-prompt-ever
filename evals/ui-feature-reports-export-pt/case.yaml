@@ -1,8 +1,0 @@
-schema_version: "1.1"
-name: ui-feature-reports-export-pt
-expected_outcome: |
-  Conversation in Brazilian Portuguese. Type feature that changes UI, size medium, round limit 4 (panel shows "Rodada 1/4" or equivalent).
-  Reconnaissance finds ReportsPage.tsx, the reports route, the similar flow src/server/export/ordersCsv.ts (tested) versus src/legacy/csv.js (legacy, forbidden by AGENTS.md), and the UI components in src/web/components/ui.
-  UI and design system and the visual reference in task context are required; questions offer real options from the repo.
-context:
-  scaffold_script: place-files.sh

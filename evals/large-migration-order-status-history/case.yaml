@@ -1,9 +1,0 @@
-schema_version: "1.1"
-name: large-migration-order-status-history
-expected_outcome: |
-  Composite task: units migration (with backfill) and feature with UI. Size large, round limit 6.
-  Reconnaissance finds the knex migrations folder, OrderRepository, OrdersPage and the UI components.
-  Required points include migration order, PR split, one branch or several, risks, constraints, UI and design system.
-  The first round starts general (objective/split) rather than asking execution details first.
-context:
-  scaffold_script: place-files.sh

@@ -1,7 +1,5 @@
 # Best Prompt Ever
 
-[Português (Brasil)](README.pt-BR.md)
-
 Best Prompt Ever is an agent skill that interviews you to turn a vague request into a complete, ticket-quality prompt that a coding agent can execute on the first try. Vague prompts make agents guess: they touch the wrong files, copy the wrong pattern, skip edge cases and stop without proof that the work is done. The rework that follows costs more than the questions that would have prevented it.
 
 ## What makes it different
@@ -124,11 +122,9 @@ The skill answers in the language of your first message. The questions, the pane
 - **No secret files.** Reconnaissance never opens `.env*` files (except templates such as `.env.example`), credentials, private keys or `*.pem` files.
 - **No secrets in the prompt.** The prompt cites files by path and never includes tokens, passwords, connection strings or personal data.
 
-## Status
+## Contents
 
-Version 0.1.0, the first release. The skill (`skills/best-prompt-ever/SKILL.md`) and its references are written; test cases live in `evals/`. Expect the wording of questions and prompts to change as it gets real use.
-
-Contributions are welcome: open an issue or a pull request. `DESIGN.md` is the source of truth, so proposals that change behavior should start there.
+This repository contains only the skill, in Markdown: `skills/best-prompt-ever/SKILL.md` and its references in `skills/best-prompt-ever/references/`, plus the plugin manifests in `.claude-plugin/`.
 
 ## License
 

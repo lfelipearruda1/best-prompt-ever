@@ -10,7 +10,7 @@ Every point the interview tracks. For each point:
 
 Task types: `feature`, `bugfix`, `refactor`, `migration`, `performance`, `dependency-upgrade`, `config-infra`, `tests`, `docs`. `all` means every type. A unit that changes UI also requires *UI and design system*, whatever its type.
 
-Task sizes: `small`, `medium`, `large` (see DESIGN.md §7). Round limits: small 2, medium 4, large 6.
+Task sizes: `small`, `medium`, `large` (see `task-types.md`, "Task size"). Round limits: small 2, medium 4, large 6.
 
 ## Contents
 
@@ -42,6 +42,17 @@ Task sizes: `small`, `medium`, `large` (see DESIGN.md §7). Round limits: small 
 ---
 
 ## Shared rules
+
+Every point has one of six levels. Vague, partial and complete have per-point criteria below; the general meaning is:
+
+| Level | Meaning |
+|---|---|
+| empty | Nothing known yet. |
+| vague | Something was said, but an agent could not act on it without guessing. |
+| partial | Actionable for part of the work; a specific piece is still missing. |
+| complete | An agent can act on it without asking anything. |
+| delegated | The user said "you decide"; recorded with the criterion the agent will use. Counts as resolved. |
+| not applicable | The point does not apply to this task. Counts as resolved. |
 
 - **empty** — nothing said and nothing found in the code.
 - **delegated** — the user said "you decide". Record the decision criterion the agent will use (e.g. "follow whichever existing flow has tests"). A delegation without a criterion is still **vague**.

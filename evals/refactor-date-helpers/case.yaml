@@ -1,8 +1,0 @@
-schema_version: "1.1"
-name: refactor-date-helpers
-expected_outcome: |
-  Type refactor, size medium (several callers across server and web), round limit 4.
-  Reconnaissance finds src/server/utils/date.ts, src/web/utils/formatDate.ts and the inline date slicing in src/server/export/ordersCsv.ts.
-  Required points include similar flows, patterns to follow, forbidden patterns and out of scope; the skill asks whether behavior may change or the refactor must keep output identical.
-context:
-  scaffold_script: place-files.sh

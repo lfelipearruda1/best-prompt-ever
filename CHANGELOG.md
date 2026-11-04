@@ -1,5 +1,10 @@
 # Changelog
 
+## [0.1.1] - 2026-11-04
+
+- Repository cleanup: removed evals, the design document and the Portuguese README; the skill is Markdown only.
+- `references/anatomy.md`: added the general definition of the six levels, previously only in the design document.
+
 ## [0.1.0] - 2026-11-04
 
 First release.

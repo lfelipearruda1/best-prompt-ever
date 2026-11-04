@@ -1,6 +1,0 @@
-schema_version: "1.1"
-name: no-trigger-direct-bugfix
-expected_outcome: |
-  Ordinary coding request. The best-prompt-ever skill is not invoked; the agent fixes the bug directly.
-context:
-  scaffold_script: place-files.sh

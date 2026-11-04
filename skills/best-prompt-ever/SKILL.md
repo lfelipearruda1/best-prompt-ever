@@ -15,7 +15,7 @@ description: >-
 license: MIT
 compatibility: Any agent that loads Agent Skills. Reconnaissance uses read-only git commands when the project is a git repository.
 metadata:
-  version: "0.1.0"
+  version: "0.1.1"
   repository: https://github.com/lfelipearruda1/best-prompt-ever
 allowed-tools: Read Grep Glob Bash(git log:*) Bash(git branch -a:*) Bash(git branch -r:*) Bash(git branch --list:*) Bash(git status:*) Bash(git show:*) Bash(git diff:*) AskUserQuestion
 ---

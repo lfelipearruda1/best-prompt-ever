@@ -1,6 +1,0 @@
-schema_version: "1.1"
-name: no-trigger-add-unit-test
-expected_outcome: |
-  Ordinary coding request. The best-prompt-ever skill is not invoked; the agent writes the test directly.
-context:
-  scaffold_script: place-files.sh
