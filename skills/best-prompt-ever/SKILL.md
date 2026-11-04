@@ -66,7 +66,11 @@ If the user pasted an existing prompt to improve, treat it as the input: rate it
 
 ### 2. Silent reconnaissance
 
-Read before you ask. Do not narrate every file; the user will see the result in the panel. Cover, in this order:
+Read before you ask. Do not narrate every file; the user will see the result in the panel.
+
+If your agent supports subagents, delegate the broad repository search to a read-only subagent (bound by the same ground rules, including never opening secret files) and bring back only a summary: areas, similar flows, versions, conventions, verification commands, each with its source path. This preserves the session's context, which will also execute the task after delivery. Agents without subagents do the search themselves, as below.
+
+Cover, in this order:
 
 1. **Agent instruction files:** `CLAUDE.md`, `AGENTS.md`, `.cursor/rules`, `.github/copilot-instructions.md`, `CONTRIBUTING.md` and similar, at the root and in the likely area.
 2. **Stack and versions:** manifests, lockfiles, runtime version files (`.nvmrc`, `.tool-versions`, `pyproject.toml`, `go.mod`, and so on). Record versions with the file they came from.
