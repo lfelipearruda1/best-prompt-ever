@@ -1,0 +1,11 @@
+{
+  "name": "best-prompt-ever",
+  "version": "0.1.0",
+  "description": "Interviews a developer to turn a vague request into a complete, ticket-quality prompt an agent can execute on the first try in a fresh session.",
+  "author": {
+    "name": "Luiz Felipe Arruda"
+  },
+  "repository": "https://github.com/lfelipearruda1/best-prompt-ever",
+  "license": "MIT",
+  "keywords": ["prompt", "skill", "interview", "planning"]
+}

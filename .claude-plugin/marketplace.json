@@ -1,0 +1,14 @@
+{
+  "name": "best-prompt-ever",
+  "description": "Marketplace for the Best Prompt Ever skill.",
+  "owner": {
+    "name": "Luiz Felipe Arruda"
+  },
+  "plugins": [
+    {
+      "name": "best-prompt-ever",
+      "source": "./",
+      "description": "Interviews a developer to turn a vague request into a complete, ticket-quality prompt an agent can execute on the first try in a fresh session."
+    }
+  ]
+}
