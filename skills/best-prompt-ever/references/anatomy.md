@@ -6,9 +6,11 @@ Every point the interview tracks. For each point:
 - **Levels** — what makes it vague, partial or complete, with examples. (`empty`, `delegated` and `not applicable` work the same for every point; see "Shared rules".)
 - **Depends on** — points that should be settled first. A parked point is worth retrying once one of these changes.
 - **Questions** — the question bank. Questions marked `[code]` must be filled with options found during reconnaissance; never ask them with invented options.
-- **Required for** — task types that need this point resolved before the interview can stop. For other types it is optional: ask only if reconnaissance shows it matters.
+- **Required for** — task types that need this point resolved before the interview can stop, and how task size changes that. For other types it is optional: ask only if reconnaissance shows it matters.
 
-Task types: `feature`, `bugfix`, `refactor`, `migration`, `performance`, `dependency-upgrade`, `config-infra`, `tests`, `docs`. `all` means every type.
+Task types: `feature`, `bugfix`, `refactor`, `migration`, `performance`, `dependency-upgrade`, `config-infra`, `tests`, `docs`. `all` means every type. A unit that changes UI also requires *UI and design system*, whatever its type.
+
+Task sizes: `small`, `medium`, `large` (see DESIGN.md §7). Round limits: small 2, medium 4, large 6.
 
 ## Contents
 
@@ -22,19 +24,20 @@ Task types: `feature`, `bugfix`, `refactor`, `migration`, `performance`, `depend
    - [Similar flows](#6-similar-flows)
    - [Patterns to follow](#7-patterns-to-follow)
    - [Forbidden patterns](#8-forbidden-patterns)
-   - [Constraints](#9-constraints)
-   - [Out of scope](#10-out-of-scope)
+   - [UI and design system](#9-ui-and-design-system)
+   - [Constraints](#10-constraints)
+   - [Out of scope](#11-out-of-scope)
 5. Execution
-   - [Base branch and branch name](#11-base-branch-and-branch-name)
-   - [One branch or several](#12-one-branch-or-several)
-   - [PR split](#13-pr-split)
-   - [Migration order](#14-migration-order)
-   - [Risks](#15-risks)
+   - [Base branch, branch name and commit convention](#12-base-branch-branch-name-and-commit-convention)
+   - [One branch or several](#13-one-branch-or-several)
+   - [PR split](#14-pr-split)
+   - [Migration order](#15-migration-order)
+   - [Risks](#16-risks)
 6. Validation
-   - [Scenarios](#16-scenarios)
-   - [Edge cases](#17-edge-cases)
-   - [How to verify](#18-how-to-verify)
-   - [Expected evidence](#19-expected-evidence)
+   - [Scenarios](#17-scenarios)
+   - [Edge cases](#18-edge-cases)
+   - [How to verify](#19-how-to-verify)
+   - [Expected evidence](#20-expected-evidence)
 
 ---
 
@@ -45,6 +48,8 @@ Task types: `feature`, `bugfix`, `refactor`, `migration`, `performance`, `depend
 - **not applicable** — the point does not apply to this task. Record why in a few words (e.g. "no schema change").
 - **Discovered beats asked.** If reconnaissance settles a point, mark it complete and show it in the panel as found, with its source path. The user can correct it; they should not have to dictate it.
 - **Each question carries a guess.** Put the option you would pick first and say why in one line.
+- **Discovered default (small tasks).** In `small` tasks, a point marked "default in small" below is not asked: fill it from what reconnaissance found, mark it complete and show its source in the panel. The user can still override it.
+- **Never read secret files.** Questions and `[code]` options never come from `.env*` (except `.env.example` and similar templates), credential files, private keys, `*.pem` or `*.key` files.
 
 ---
 
@@ -79,7 +84,7 @@ Task types: `feature`, `bugfix`, `refactor`, `migration`, `performance`, `depend
 |---|---|---|
 | vague | A reason with no detail. | "Customers asked for it." |
 | partial | The trigger is known but impact or source is missing. | "Support tickets about duplicated invoices." |
-| complete | Trigger, who is affected and links or facts the agent needs. | "Since release 4.2, invoices are duplicated when a payment is retried; affects card payments only; ticket reference in the issue tracker; reproduced on staging." |
+| complete | Trigger, who is affected and links or facts the agent needs. When the task changes UI, also the visual reference: a design file (Figma, Claude Design or another design tool), a screenshot, or an existing screen to follow. | "Since release 4.2, invoices are duplicated when a payment is retried; affects card payments only; ticket reference in the issue tracker; reproduced on staging." / UI: "New filter bar per the design file linked in the ticket; spacing and states follow the existing `OrdersPage` filters." |
 
 **Depends on:** Objective.
 
@@ -89,8 +94,9 @@ Task types: `feature`, `bugfix`, `refactor`, `migration`, `performance`, `depend
 3. Is there an issue, ticket, design or thread the agent should read? (Paste the reference, not secrets.)
 4. `[code]` The recent history of `<path>` shows `<commit or change>`. Is this related?
 5. Has anything been tried already? What happened?
+6. (UI) Is there a visual reference: a design file (Figma, Claude Design, another tool), a screenshot, or `[code]` an existing screen such as `<screen A>` or `<screen B>` to follow?
 
-**Required for:** `bugfix`, `performance`, `migration`. Optional elsewhere.
+**Required for:** `bugfix`, `performance`, `migration`, and any unit that changes UI (including the visual reference). Optional elsewhere.
 
 ---
 
@@ -227,7 +233,40 @@ Task types: `feature`, `bugfix`, `refactor`, `migration`, `performance`, `depend
 
 ---
 
-## 9. Constraints
+## 9. UI and design system
+
+**Means:** how the UI change fits the project's design system, components and existing screens, and which UI states and qualities it must cover.
+
+| Level | Criterion | Example |
+|---|---|---|
+| vague | A look, not a spec. | "Make it look nice, like the rest of the app." |
+| partial | Components or a reference screen chosen, but states, responsiveness, accessibility or copy are missing. | "Use the shared `Table` and `Button`; copy the orders page." |
+| complete | Components to reuse (by path), the reference screen, every state, breakpoints, accessibility expectations, motion and copy/i18n handling. | "Reuse `ui/Table`, `ui/Button`, `ui/EmptyState`; layout like `pages/OrdersPage`. States: loading skeleton, empty with CTA, error toast with retry, success. Stacks below `md` breakpoint. Keyboard reachable, labelled controls, focus returns to the trigger. No new animation; reuse the existing fade. All strings in `locales/*/reports.json`." |
+
+**Covers:**
+- **Design system or component library:** whether the project has one, and which components to reuse instead of creating new ones.
+- **Similar screen:** an existing screen whose layout and behavior to follow.
+- **States:** loading, empty, error, success (and partial or disabled when relevant).
+- **Responsiveness:** breakpoints and how the layout changes at each.
+- **Accessibility:** keyboard use, focus, labels, contrast, screen reader announcements.
+- **Animations and transitions:** none, reuse existing ones, or new ones with their purpose.
+- **Copy and i18n:** where strings live, which languages, who provides the copy.
+
+**Depends on:** Task context (visual reference), Area, Similar flows.
+
+**Questions:**
+1. `[code]` I found a component library in `<path>` with `<Component A>`, `<Component B>`, `<Component C>`. Should the change reuse these? Any component that must not be used?
+2. `[code]` `<screen A>` and `<screen B>` look closest to this. Which one should the layout follow?
+3. What should the user see while loading, when there is no data, on error and on success? `[code]` `<screen A>` uses `<EmptyState>` and `<ErrorBanner>`; same here?
+4. Which breakpoints matter, and what changes at each? `[code]` The project defines breakpoints in `<path>`.
+5. Accessibility and motion: any requirement beyond the project's current practice? Reuse existing transitions or none?
+6. `[code]` Strings live in `<i18n path>` with `<languages>`. Who provides the copy, and must every language be filled?
+
+**Required for:** any unit that changes UI, in every size. **Not applicable** otherwise.
+
+---
+
+## 10. Constraints
 
 **Means:** limits the solution must respect: compatibility, performance budgets, security, deadlines, environments, data rules.
 
@@ -250,7 +289,7 @@ Task types: `feature`, `bugfix`, `refactor`, `migration`, `performance`, `depend
 
 ---
 
-## 10. Out of scope
+## 11. Out of scope
 
 **Means:** what the agent must not do in this task, even if it looks related.
 
@@ -272,28 +311,34 @@ Task types: `feature`, `bugfix`, `refactor`, `migration`, `performance`, `depend
 
 ---
 
-## 11. Base branch and branch name
+## 12. Base branch, branch name and commit convention
 
-**Means:** the branch to start from and the name of the new branch(es).
+**Means:** the branch to start from, the name of the new branch(es) chosen by the user, and the commit message convention.
 
 | Level | Criterion | Example |
 |---|---|---|
 | vague | "The usual." | |
-| partial | Base known, name missing (or the reverse). | "From `main`." |
-| complete | Base branch and a name following the repo convention. | "Base `develop`; branch `feat/report-csv-export`." |
+| partial | Base known, but the name not chosen or the commit convention unknown. | "From `main`." |
+| complete | Base branch, a branch name the user chose, and the commit convention with its source. | "Base `develop` (default branch); branch `feat/PROJ-123-report-csv-export` (chosen); Conventional Commits with the ticket key, as in `git log`." |
+
+**How it is resolved:**
+- **Base branch:** discovered (default branch, or the branch recent work starts from).
+- **Branch name:** never decided by the skill. Always offer 2 or 3 names that follow the pattern found in `git branch -a` and `git log`, plus the option to write a custom name. The user picks.
+- **Commit convention:** usually discovered from `git log` (e.g. Conventional Commits, a ticket key prefix). Ask only when there is no clear pattern.
 
 **Depends on:** Task type, One branch or several.
 
 **Questions:**
-1. `[code]` Recent branches follow `<pattern>` and the default branch is `<branch>`. Use `<suggested name>` from `<base>`?
-2. Does this need to start from a release or feature branch instead of the default one?
-3. Is there a ticket key that must appear in the branch name?
+1. `[code]` Branch name: which one? `<option 1>`, `<option 2>`, `<option 3>` (all follow `<pattern>` from `git branch -a`), or write your own.
+2. `[code]` The default branch is `<branch>`, but recent work starts from `<other branch>`. Which base should this use?
+3. Is there a ticket key that must appear in the branch name and commits?
+4. `[code]` `git log` mixes `<style A>` and `<style B>`. Which commit convention should the agent follow? (Ask only when there is no clear pattern.)
 
-**Required for:** all except `docs` (optional there).
+**Required for:** all except `docs` (optional there). Default in small: base branch and commit convention. The branch name is asked in every size.
 
 ---
 
-## 12. One branch or several
+## 13. One branch or several
 
 **Means:** whether the units of work share a branch or each gets its own (stacked or independent).
 
@@ -314,7 +359,7 @@ Task types: `feature`, `bugfix`, `refactor`, `migration`, `performance`, `depend
 
 ---
 
-## 13. PR split
+## 14. PR split
 
 **Means:** how the work is divided into pull requests and in what order they are reviewed and merged.
 
@@ -332,11 +377,11 @@ Task types: `feature`, `bugfix`, `refactor`, `migration`, `performance`, `depend
 3. Must any PR be deployed (not just merged) before the next one?
 4. Should the agent open the PRs, or stop when the branches are ready?
 
-**Required for:** composite tasks and `migration`. Optional for single-unit tasks (default: one PR).
+**Required for:** composite tasks and `migration`. Optional for single-unit tasks (default: one PR). Default in small: one PR.
 
 ---
 
-## 14. Migration order
+## 15. Migration order
 
 **Means:** the sequence of schema/data changes relative to code changes and deploys.
 
@@ -358,7 +403,7 @@ Task types: `feature`, `bugfix`, `refactor`, `migration`, `performance`, `depend
 
 ---
 
-## 15. Risks
+## 16. Risks
 
 **Means:** what could go wrong in production or during rollout, and how to limit it.
 
@@ -376,11 +421,11 @@ Task types: `feature`, `bugfix`, `refactor`, `migration`, `performance`, `depend
 3. Is a feature flag or gradual rollout needed? `[code]` Flags in this repo use `<mechanism>`.
 4. How would you notice a problem after deploy (metric, log, alert)?
 
-**Required for:** `migration`, `performance`, `dependency-upgrade`, `config-infra`. Optional elsewhere.
+**Required for:** `migration`, `performance`, `dependency-upgrade`, `config-infra`. Optional elsewhere, and optional in small tasks of any type.
 
 ---
 
-## 16. Scenarios
+## 17. Scenarios
 
 **Means:** numbered validation scenarios in the form *action → expected result* that prove the objective is met.
 
@@ -402,7 +447,7 @@ Task types: `feature`, `bugfix`, `refactor`, `migration`, `performance`, `depend
 
 ---
 
-## 17. Edge cases
+## 18. Edge cases
 
 **Means:** boundary inputs and unusual states that the scenarios must also cover.
 
@@ -424,7 +469,7 @@ Task types: `feature`, `bugfix`, `refactor`, `migration`, `performance`, `depend
 
 ---
 
-## 18. How to verify
+## 19. How to verify
 
 **Means:** the concrete commands and steps the agent runs to check its work.
 
@@ -442,11 +487,11 @@ Task types: `feature`, `bugfix`, `refactor`, `migration`, `performance`, `depend
 3. Is there test data or a seed the agent should use? (Never production data.)
 4. Do any checks need services running locally (database, queue)? `[code]` I found `<compose file or script>`.
 
-**Required for:** all.
+**Required for:** all. Default in small: the project's own lint and test scripts, scoped to the changed files.
 
 ---
 
-## 19. Expected evidence
+## 20. Expected evidence
 
 **Means:** what the agent must show at the end to prove each scenario passed.
 
@@ -463,4 +508,4 @@ Task types: `feature`, `bugfix`, `refactor`, `migration`, `performance`, `depend
 2. Should the agent list what it could not verify?
 3. Do you want the final diff summarized, or only the evidence?
 
-**Required for:** all.
+**Required for:** all. Default in small: passing output of the lint and test commands from *How to verify*, plus a list of what was not verified.
