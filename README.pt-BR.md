@@ -68,8 +68,6 @@ A entrevista termina quando todos os pontos obrigatórios estão resolvidos, qua
 
 ## Instalação
 
-> A skill ainda está em desenvolvimento: o `SKILL.md` não foi escrito, então estes comandos só vão instalar uma skill funcional depois que ele existir.
-
 **Plugin do Claude Code**
 
 ```
@@ -130,7 +128,7 @@ A skill responde na língua da sua primeira mensagem. Perguntas, painel e prompt
 
 ## Status
 
-Em desenvolvimento. O design (`DESIGN.md`) e a referência da anatomia (`skills/best-prompt-ever/references/anatomy.md`) estão escritos; o `SKILL.md` ainda não.
+Versão 0.1.0, a primeira. A skill (`skills/best-prompt-ever/SKILL.md`) e as referências estão escritas; os casos de teste ficam em `evals/`. A redação das perguntas e dos prompts deve mudar conforme ela for usada de verdade.
 
 Contribuições são bem-vindas: abra uma issue ou um pull request. O `DESIGN.md` é a fonte da verdade, então propostas que mudam comportamento devem começar por ele.
 

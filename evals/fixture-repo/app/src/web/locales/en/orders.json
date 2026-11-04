@@ -1,0 +1,6 @@
+{
+  "title": "Orders",
+  "export": "Export CSV",
+  "empty": "No orders yet",
+  "error": "Could not load orders"
+}

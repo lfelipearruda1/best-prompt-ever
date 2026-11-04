@@ -1,0 +1,10 @@
+schema_version: "1.1"
+name: small-bugfix-session-expiry
+expected_outcome: |
+  Type bugfix, size small, round limit 2 (panel shows "Round 1/2").
+  Reconnaissance finds src/server/auth/session.ts (isExpired) and its test before asking.
+  Required points: objective, stack, area, files, patterns, out of scope, branch, scenarios, edge cases, how to verify, evidence.
+  Base branch (main), commit convention (Conventional Commits with ORD key, from git log), how to verify (npm run lint / npm test from package.json) and expected evidence are filled as defaults with their source, not asked.
+  At most 4 questions; branch-name options, when offered, follow the feat|fix/ORD-<n>-<slug> pattern plus a write-your-own option.
+context:
+  scaffold_script: place-files.sh

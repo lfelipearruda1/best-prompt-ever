@@ -66,8 +66,6 @@ The interview stops when every required point is resolved, when you say "enough"
 
 ## Installation
 
-> The skill is still in development: `SKILL.md` is not written yet, so these commands will not give you a working skill until it is.
-
 **Claude Code plugin**
 
 ```
@@ -128,7 +126,7 @@ The skill answers in the language of your first message. The questions, the pane
 
 ## Status
 
-In development. The design (`DESIGN.md`) and the anatomy reference (`skills/best-prompt-ever/references/anatomy.md`) are written; `SKILL.md` is not yet.
+Version 0.1.0, the first release. The skill (`skills/best-prompt-ever/SKILL.md`) and its references are written; test cases live in `evals/`. Expect the wording of questions and prompts to change as it gets real use.
 
 Contributions are welcome: open an issue or a pull request. `DESIGN.md` is the source of truth, so proposals that change behavior should start there.
 
