@@ -57,7 +57,7 @@ Every point has one of six levels. Vague, partial and complete have per-point cr
 - **empty** — nothing said and nothing found in the code.
 - **delegated** — the user said "you decide". Record the decision criterion the agent will use (e.g. "follow whichever existing flow has tests"). A delegation without a criterion is still **vague**.
 - **not applicable** — the point does not apply to this task. Record why in a few words (e.g. "no schema change").
-- **Discovered beats asked.** If reconnaissance settles a point, mark it complete and show it in the panel as found, with its source path. The user can correct it; they should not have to dictate it.
+- **Discovered beats asked.** If reconnaissance settles a point, mark it complete and show it in the panel as found, with its source path. A project memory fact that passed its check against the code counts as discovered, with the source `memory (YYYY-MM-DD)`; a remembered user preference only sets the recommended option (see `project-memory.md`). The user can correct it; they should not have to dictate it.
 - **Each question carries a guess.** Put the option you would pick first and say why in one line.
 - **Discovered default (small tasks).** In `small` tasks, a point marked "default in small" below is not asked: fill it from what reconnaissance found, mark it complete and show its source in the panel. The user can still override it.
 - **Never read secret files.** Questions and `[code]` options never come from `.env*` (except `.env.example` and similar templates), credential files, private keys, `*.pem` or `*.key` files.
@@ -334,7 +334,7 @@ Every point has one of six levels. Vague, partial and complete have per-point cr
 
 **How it is resolved:**
 - **Base branch:** discovered (default branch, or the branch recent work starts from).
-- **Branch name:** never decided by the skill. Always offer 2 or 3 names that follow the pattern found in `git branch -a` and `git log`, plus the option to write a custom name. The user picks.
+- **Branch name:** never decided by the skill. Always offer 2 or 3 names that follow the pattern recorded in the project memory and found in `git branch -a` and `git log`, plus the option to write a custom name. The user picks.
 - **Commit convention:** usually discovered from `git log` (e.g. Conventional Commits, a ticket key prefix). Ask only when there is no clear pattern.
 
 **Depends on:** Task type, One branch or several.

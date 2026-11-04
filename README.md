@@ -14,10 +14,10 @@ input → silent reconnaissance → gap analysis → question rounds → deliver
 ```
 
 1. **Input.** Your initial request. If it is empty, the skill asks only *what* and *where*.
-2. **Silent reconnaissance.** Read-only. It reads agent instruction files (`CLAUDE.md`, `AGENTS.md`), stack and versions, the area of the change, similar flows, and branch and commit conventions. It never asks what it can find out by itself.
+2. **Silent reconnaissance.** Read-only. It starts from the project memory, if there is one, then reads agent instruction files (`CLAUDE.md`, `AGENTS.md`), stack and versions, the area of the change, similar flows, and branch and commit conventions. It never asks what it can find out by itself.
 3. **Gap analysis.** It rates every point of the final prompt, guesses the task type and size, and decides which points are required.
 4. **Question rounds.** 1 to 4 questions per round, from general to specific, each with concrete options and a suggested answer. Vague answers get one follow-up; if a point stays vague, it is parked and revisited later.
-5. **Delivery.** It shows the final prompt and asks whether it may execute.
+5. **Delivery.** It shows the final prompt and asks whether it may execute. It also proposes an update to the project memory and saves it only if you agree.
 
 ### Levels per point
 
@@ -60,7 +60,18 @@ n/a        migration order (unit 2)
 
 ### The end
 
-The interview stops when every required point is resolved, when you say "enough", or when the round limit is reached. Anything left open goes to an "Open questions and assumptions" section. The skill then shows the prompt in the conversation, says it has the context it needs, and asks whether it may execute. For large tasks it also offers to copy the prompt into a fresh session. No file is saved.
+The interview stops when every required point is resolved, when you say "enough", or when the round limit is reached. Anything left open goes to an "Open questions and assumptions" section. The skill then shows the prompt in the conversation, says it has the context it needs, and asks whether it may execute. For large tasks it also offers to copy the prompt into a fresh session. The prompt is not saved to a file; the only file the skill may write is the project memory, and only with your OK.
+
+### Project memory
+
+The skill keeps `.best-prompt-ever/context.md` in your repository, committed with the code. On the first run it proposes creating it; on later runs it proposes updates. It records what the interviews learned:
+
+- architecture, and how this service connects to others (HTTP calls, queues, webhooks, integrations such as Zapier);
+- stack and versions, with their source files;
+- conventions: branch names, commits, how work is split into PRs, how migrations are done, lint and test commands;
+- patterns to follow and avoid, recurring preferences, and work in progress.
+
+Every fact has its source and the date it was last confirmed. The next interview checks each fact against the code before using it, so you answer fewer questions, and reviewers get the same context in one file. The file is curated rather than appended: finished work and facts the code no longer supports are removed. It never holds secrets, personal data or pasted code.
 
 ## Installation
 
@@ -118,9 +129,9 @@ The skill answers in the language of your first message. The questions, the pane
 
 ## Privacy and security
 
-- **Read-only interview.** Nothing is written during the interview: no edits, branches, commits or files. Implementation starts only after you confirm, as the agent's normal work under its own rules.
+- **Read-only interview.** Nothing is written during the interview: no edits, branches, commits or files. The one exception is `.best-prompt-ever/context.md`, written at delivery only if you agree. Implementation starts only after you confirm, as the agent's normal work under its own rules.
 - **No secret files.** Reconnaissance never opens `.env*` files (except templates such as `.env.example`), credentials, private keys or `*.pem` files.
-- **No secrets in the prompt.** The prompt cites files by path and never includes tokens, passwords, connection strings or personal data.
+- **No secrets in the prompt or the memory.** Both cite files by path and never include tokens, passwords, connection strings or personal data.
 
 ## Contents
 

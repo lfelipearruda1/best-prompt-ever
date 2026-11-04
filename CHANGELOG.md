@@ -1,5 +1,11 @@
 # Changelog
 
+## [0.2.0] - 2026-11-04
+
+- Project memory: each interview reads `.best-prompt-ever/context.md` (committed in the repository) as hints checked against the code, and at delivery proposes an update that is saved only with the user's OK. It records architecture, service connections and integrations, stack, conventions (branches, commits, PRs, migrations, lint and tests), patterns, preferences and work in progress.
+- `references/project-memory.md`: reading, writing and curation rules, what never to record, and the file template.
+- `SKILL.md`, `anatomy.md`, `output-template.md`: memory as a discovered source, branch name options follow the recorded pattern, memory proposal at delivery.
+
 ## [0.1.1] - 2026-11-04
 
 - Repository cleanup: removed evals, the design document and the Portuguese README; the skill is Markdown only.

@@ -89,4 +89,6 @@ Headings are shown in English; translate them to the conversation language.
 
 ## After the prompt
 
-Below the prompt, outside it, say in the conversation language that you now have the context you need and ask whether you may execute it. In **large** tasks, also offer to copy the prompt into a fresh session instead, because the interview has already used part of the context window.
+Below the prompt, outside it, say in the conversation language that you now have the context you need and ask whether you may execute it.
+
+Then, also outside the prompt, show the proposed update to `.best-prompt-ever/context.md` (the whole file on the first run, otherwise the sections that change) and ask whether to save it, following `project-memory.md`. Saving the memory and executing the prompt are separate answers. In **large** tasks, also offer to copy the prompt into a fresh session instead, because the interview has already used part of the context window.
